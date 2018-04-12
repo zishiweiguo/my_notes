@@ -1,0 +1,60 @@
+1.下载好mysql5.7的安装包，安装包放在  /data/software 目录下
+
+2.进入到 /usr/local 目录下，将mysql安装包解压到该目录下
+cd /usr/local
+tar -zxvf /data/software/mysql-5.7.17-linux-glibc2.5-x86_64.tar.gz
+
+3.修改文件夹名称
+mv mysql-5.7.17-linux-glibc2.5-x86_64 mysql
+
+4.进入到mysql目录，创建data文件夹 （5.7版本没有data目录）
+mkdir data
+
+5.新建mysql的用户和用户组
+groupadd mysql       #添加用户组
+useradd -r -s /sbin/nologin -g mysql mysql -d /usr/local/mysql     #新建msyql用户禁止登录shell
+
+6.改变mysql目录权限
+chown -R mysql.mysql /usr/local/mysql/
+
+7.初始化数据库
+mysql 目录下 ./bin/mysql_install_db --user=mysql --basedir=/usr/local/mysql/ --datadir=/usr/local/mysql/data/
+
+8.复制配置文件到 /etc/my.cnf 这里是mysql的基本配置问题
+cp -a ./support-files/my-default.cnf /etc/my.cnf   #会有一个选择是否覆盖原有文件，直接按 y回车选择是就可以
+
+9.mysql放到本地系统服务中
+cp -a ./support-files/mysql.server /etc/init.d/mysqld
+
+10.修改my.cnf
+vim /etc/my.cnf
+
+basedir = /usr/local/mysql
+datadir = /usr/local/mysql/data
+port = 3306
+socket = /tmp/mysql.sock
+character-set-server = utf8
+
+11.启动mysql的服务
+
+service mysqld start 
+
+12.查看初始密码
+cat /root/.mysql_secret
+
+13.登录
+
+bin/mysql -uroot -p 
+复制的密码，粘贴进去回车
+
+14.修改密码
+
+SET PASSWORD FOR 'root'@localhost=PASSWORD('123456'); 
+
+15.设置mysql允许远程连接
+
+mysql> use mysql
+mysql> update user set host='%' where user='root' limit 1;
+mysql> flush privileges;
+
+至此mysql安装完成，并完成基本设置
