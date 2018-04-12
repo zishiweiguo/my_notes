@@ -1,0 +1,18 @@
+导出数据
+insert overwrite local directory '/server/mm'
+select user_id as userid,amount,`time` as num from jlc.regular_info where yn=0 and status=10 limit 20;
+
+删除分区
+用这个命令：ALTER TABLE shphonefeature DROP IF EXISTS PARTITION(year = 2015, month = 10, day = 1);删除掉指定分区
+
+导入csv 到hive中
+
+hive中创建表：
+create table media_serving_time(channelname string, start_time string, end_time string) row format delimited fields terminated by ',' ;
+
+hdfs 中上传csv文件
+hadoop fs -put local_file /input/
+如果/input 目录不存在 先创建目录  hadoop fs -mkdir /input
+
+加载csv数据到hive表中
+hive 客户端执行 load data inpath '/input/media_serving_time0108.csv' overwrite into table media_serving_time;

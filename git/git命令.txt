@@ -1,0 +1,42 @@
+把当前目录变成git仓库
+git init
+
+查看XX文件修改了那些内容
+git diff  XX      
+
+git 上下载文件
+到指定目录下：
+执行  git clone git@ip:/server/gitrepo/xx.git
+
+本地仓库添加文件
+git add xx.txt
+
+将本地仓库文件提交
+git commit -m "desc"
+
+推送
+git push origin master
+
+查看文件内容
+cat xx.txt
+
+查看分支
+git branch
+
+创建并切换分支
+git checkout -b xx
+
+当前分支合并某分支
+git merge branchName
+
+查看状态
+git status
+
+查看操作日志
+git log
+
+
+git 服务器创建远程仓库
+创建目录 mkdir xforgame.git
+初始化仓库 git init --bare xforgame.git
+修改仓库权限（如果没有此操作则无法push） chown -R git:git xforgame.git
